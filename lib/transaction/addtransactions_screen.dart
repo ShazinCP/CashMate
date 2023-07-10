@@ -449,6 +449,7 @@ class _AddTransactionState extends State<AddTransaction> {
           'Transaction Added Successfully',
           textAlign: TextAlign.center,
         ),
+        
         duration: Duration(seconds: 3),
         backgroundColor: Color(0xff368983),
       ),

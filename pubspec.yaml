@@ -48,6 +48,7 @@ dependencies:
   flutter_slidable: ^3.0.0
   shared_preferences: ^2.1.2
   share_plus: ^7.0.2
+  rename: ^2.1.1
   
 dev_dependencies:
   flutter_test:
@@ -92,7 +93,7 @@ flutter:
     - photos/ThirdScreen Image.png
     - photos/LoginScreen Image.png
     - photos/Empty Box.png
-    - photos/Logo_Image.png
+    - photos/App_Logo_Image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

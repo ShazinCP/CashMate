@@ -69,7 +69,6 @@ class _HomeHeadState extends State<HomeHead> {
                             )
                           ],
                         ),
-                       
                         const Text(
                           'Welcome back!',
                           style: TextStyle(
@@ -192,7 +191,8 @@ class _HomeHeadState extends State<HomeHead> {
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 19,
-                                color: Colors.red)),
+                                color: Colors.red),
+                                ),
                       ],
                     ),
                   )

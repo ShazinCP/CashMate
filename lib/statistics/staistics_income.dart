@@ -19,11 +19,11 @@ class ScreenIncomeChart extends StatelessWidget {
                 .where((element) => element.IN == 'income')
                 .toList();
             return overViewGraphNotifier.value.isEmpty
-                ? SingleChildScrollView(
+                ? const SingleChildScrollView(
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: const [
+                        children: [
                           Center(child: Text('No data Found')),
                         ],
                       ),

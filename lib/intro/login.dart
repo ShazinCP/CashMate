@@ -1,5 +1,5 @@
 import 'package:cashmate/main.dart';
-import 'package:cashmate/widgets/bottom_bar.dart';
+import 'package:cashmate/views/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

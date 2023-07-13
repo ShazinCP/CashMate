@@ -1,7 +1,7 @@
 import 'package:cashmate/db_functions/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/transaction/slidable_transaction.dart';
-import 'package:cashmate/transaction/transaction_list.dart';
+import 'package:cashmate/views/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 ValueNotifier<List<MoneyModel>> overViewListNotifier =

@@ -2,8 +2,8 @@ import 'package:cashmate/db_functions/income_expence.dart';
 import 'package:cashmate/db_functions/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/transaction/transactions_screen.dart';
-import 'package:cashmate/widgets/home_head.dart';
-import 'package:cashmate/widgets/uppercase.dart';
+import 'package:cashmate/views/screens/home_head.dart';
+import 'package:cashmate/views/widgets/uppercase.dart';
 import 'package:flutter/material.dart';
 
 

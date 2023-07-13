@@ -1,8 +1,8 @@
-import 'package:cashmate/Settings/settings_screen.dart';
+import 'package:cashmate/views/screens/settings_screen.dart';
 import 'package:cashmate/transaction/addtransactions_screen.dart';
-import 'package:cashmate/transaction/transaction_list.dart';
-import 'package:cashmate/widgets/home_screen.dart';
-import 'package:cashmate/statistics/statistics_screen.dart';
+import 'package:cashmate/views/screens/transaction_list.dart';
+import 'package:cashmate/views/screens/home_screen.dart';
+import 'package:cashmate/views/screens/statistics_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';

@@ -1,4 +1,4 @@
-import 'package:cashmate/transaction/transaction_list.dart';
+import 'package:cashmate/views/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 class TypeFilterClass extends StatelessWidget {

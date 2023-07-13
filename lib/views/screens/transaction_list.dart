@@ -2,7 +2,7 @@ import 'package:cashmate/filter/date_filter_transaction.dart';
 import 'package:cashmate/filter/type_filter_transaction.dart';
 import 'package:cashmate/transaction/transactions_screen.dart';
 import 'package:cashmate/db_functions/transactionDB.dart';
-import 'package:cashmate/widgets/searchfield.dart';
+import 'package:cashmate/views/widgets/searchfield.dart';
 import 'package:flutter/material.dart';
 
 

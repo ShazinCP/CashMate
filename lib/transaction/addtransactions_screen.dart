@@ -1,7 +1,7 @@
 import 'package:cashmate/db_functions/income_expence.dart';
 import 'package:cashmate/db_functions/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/widgets/bottom_bar.dart';
+import 'package:cashmate/views/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

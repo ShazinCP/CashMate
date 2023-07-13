@@ -1,8 +1,8 @@
 import 'package:cashmate/intro/firstscreen.dart';
-import 'package:cashmate/widgets/bottom_bar.dart';
+import 'package:cashmate/views/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main.dart';
+import '../../main.dart';
 
 class ScreenSplash extends StatefulWidget {
   const ScreenSplash({super.key});

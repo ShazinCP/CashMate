@@ -1,8 +1,8 @@
 // import 'package:cashflow/screens/home_screen.dart';
 import 'package:cashmate/db_functions/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/widgets/edit_screen.dart';
-import 'package:cashmate/widgets/uppercase.dart';
+import 'package:cashmate/views/widgets/edit_screen.dart';
+import 'package:cashmate/views/widgets/uppercase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

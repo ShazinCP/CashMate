@@ -1,5 +1,5 @@
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/statistics/statistics_screen.dart';
+import 'package:cashmate/views/screens/statistics_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

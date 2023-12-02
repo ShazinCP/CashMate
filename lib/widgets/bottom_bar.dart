@@ -1,9 +1,8 @@
-import 'package:cashmate/views/settings/settings_screen.dart';
+import 'package:cashmate/controller/bottombar_provider.dart';
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/views/transaction/addtransactions_screen.dart';
-import 'package:cashmate/views/transaction/transaction_list.dart';
-import 'package:cashmate/views/home/home_screen.dart';
-import 'package:cashmate/views/statistics/statistics_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
@@ -20,17 +19,11 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBar extends State<BottomBar> {
-  final List tabs = [
-     const HomeScreen(),
-     const TransactionList(),
-     const StatisticsScreen(),
-     const Settings()
-  ];
-  int _currentIndex = 0;
   @override
   void initState() {
+    final provider = Provider.of<BottomProvider>(context, listen: false);
     super.initState();
-    _currentIndex = widget.initialIndex;
+    provider.currentIndex = widget.initialIndex;
   }
 
   dynamic selected;
@@ -44,82 +37,78 @@ class _BottomBar extends State<BottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: tabs.elementAt(_currentIndex),
-      extendBody: true, //to make floating action button notch transparent
-      //to avoid the floating action button overlapping behavior,
-      // when a soft keyboard is displayed
-      // resizeToAvoidBottomInset: false,
-
-      bottomNavigationBar: StylishBottomBar(
-        hasNotch: true,
-        fabLocation: StylishBarFabLocation.center,
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          // controller.jumpToPage(index);
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomBarItem(
-            icon: const Icon(
-              Icons.home,
+    return Consumer<BottomProvider>(
+      builder: (context, provider, child) {
+        return Scaffold(
+          body: provider.tabs.elementAt(provider.currentIndex),
+          extendBody: true,
+          bottomNavigationBar: StylishBottomBar(
+            hasNotch: true,
+            fabLocation: StylishBarFabLocation.center,
+            currentIndex: provider.currentIndex,
+            onTap: (int index) {
+              // setState(() {
+              //   _currentIndex = index;
+              // });
+              provider.indexColors(index);
+            },
+            items: [
+              BottomBarItem(
+                icon: const Icon(
+                  Icons.home,
+                ),
+                selectedIcon: const Icon(Icons.home),
+                selectedColor: cBlackColor54,
+                backgroundColor: cBlackColor,
+                title: const Text('Home'),
+              ),
+              BottomBarItem(
+                icon: const Icon(Icons.history_rounded),
+                unSelectedColor: cBlackColor,
+                backgroundColor: cBlackColor,
+                title: const Text('Recent'),
+              ),
+              BottomBarItem(
+                  icon: const Icon(
+                    Icons.insert_chart,
+                  ),
+                  selectedIcon: const Icon(
+                    Icons.insert_chart,
+                  ),
+                  backgroundColor: cBlackColor,
+                  selectedColor: cBlackColor54,
+                  title: const Text('Statistics')),
+              BottomBarItem(
+                  icon: const Icon(
+                    Icons.settings,
+                  ),
+                  selectedIcon: const Icon(
+                    Icons.settings,
+                  ),
+                  backgroundColor: cBlackColor,
+                  selectedColor: cBlackColor54,
+                  title: const Text('Settings')),
+            ],
+            option: AnimatedBarOptions(
+              barAnimation: BarAnimation.fade,
+              iconStyle: IconStyle.animated,
             ),
-            selectedIcon: const Icon(Icons.home),
-            selectedColor: Colors.black54,
-            backgroundColor: Colors.black,
-            title: const Text('Home'),
           ),
-          BottomBarItem(
-            icon: const Icon(Icons.history_rounded),
-            // selectedIcon: const Icon(Icons.category),
-            // selectedColor: Color(0xFF77C170),
-            unSelectedColor: Colors.black,
-            backgroundColor: Colors.black,
-            title: const Text('Recent'),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const AddTransaction()));
+            },
+            backgroundColor: cAppThemeColor,
+            child: const Icon(
+              Icons.add,
+              color: cWhiteColor,
+            ),
           ),
-          BottomBarItem(
-              icon: const Icon(
-                Icons.insert_chart,
-              ),
-              selectedIcon: const Icon(
-                Icons.insert_chart,
-              ),
-              backgroundColor: Colors.black,
-              selectedColor: Colors.black54,
-              title: const Text('Statistics')),
-          BottomBarItem(
-              icon: const Icon(
-                Icons.settings,
-              ),
-              selectedIcon: const Icon(
-                Icons.settings,
-              ),
-              backgroundColor: Colors.black,
-              selectedColor: Colors.black54,
-              title: const Text('Settings')),
-        ],
-        option: AnimatedBarOptions(
-          // iconSize: 32,
-          barAnimation: BarAnimation.fade,
-          iconStyle: IconStyle.animated,
-          // opacity: 0.3,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) =>  const AddTransaction()));
-        },
-        backgroundColor: const Color(0xff368983),
-        child: const Icon(
-          // heart ? CupertinoIcons.add : CupertinoIcons.add,
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+        );
+      },
     );
   }
 }

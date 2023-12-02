@@ -1,3 +1,4 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/views/statistics/statistics_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class ScreenIncomeChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 246, 245, 245),
+        backgroundColor: cWhiteARGBColor3,
         body: ValueListenableBuilder(
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<MoneyModel> newList,
@@ -37,8 +38,6 @@ class ScreenIncomeChart extends StatelessWidget {
                             incomeDate.name,
                         yValueMapper: (MoneyModel incomeDate, _) =>
                             int.parse(incomeDate.amount),
-                        //num.parse(incomeDate.amount),
-                        //incomeDate.hashCode,
                         dataLabelSettings: const DataLabelSettings(
                           isVisible: true,
                         ),

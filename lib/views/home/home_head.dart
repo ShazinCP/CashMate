@@ -11,7 +11,6 @@ class HomeHead extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final double screenWidth = size.width;
     final double screenHeight = size.height;
-    // TextEditingController limitController = TextEditingController();
     return Stack(
       children: [
         Column(

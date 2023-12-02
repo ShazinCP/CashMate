@@ -1,3 +1,4 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:flutter/material.dart';
 
 button(
@@ -10,7 +11,7 @@ button(
     alignment: Alignment.center,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(15),
-      color: Colors.black,
+      color: cBlackColor,
     ),
     width: width,
     height: height,
@@ -19,7 +20,7 @@ button(
       style: TextStyle(
         fontSize: fontsize,
         fontWeight: FontWeight.w500,
-        color: Colors.white,
+        color: cWhiteColor,
       ),
     ),
   );

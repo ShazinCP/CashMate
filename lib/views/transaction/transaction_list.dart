@@ -1,3 +1,5 @@
+import 'package:cashmate/constants/sizedbox.dart';
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/widgets/filter/date_filter_transaction.dart';
 import 'package:cashmate/widgets/filter/type_filter_transaction.dart';
 import 'package:cashmate/views/transaction/transactions_screen.dart';
@@ -17,7 +19,6 @@ class TransactionList extends StatefulWidget {
 
 class _TransactionListState extends State<TransactionList> {
   ValueNotifier showCategory = ValueNotifier('All');
-  // TextEditingController amountC = TextEditingController();
 
   @override
   void initState() {
@@ -33,26 +34,20 @@ class _TransactionListState extends State<TransactionList> {
           appBar: AppBar(
             actions:  const [
               DateFilterTransaction(),
-              SizedBox(
-                width: 10,
-              ),
+            cWidth10,
               TypeFilterClass(),
-              SizedBox(
-                width: 20,
-              ),
+             cWidth20,
             ],
             flexibleSpace: Container(
-              color: const Color(0xff368983),
+              color: cAppThemeColor,
             ),
-            title: const Center(
-              child: Text('Transactions'),
-            ),
+            title: const Text('Transactions'),
             centerTitle: true,
           ),
-          body:  const Column(
+          body:   Column(
             children: [
               SearchField(),
-              Expanded(
+              const Expanded(
                 child: Transactions(),
               ),
             ],
@@ -61,11 +56,3 @@ class _TransactionListState extends State<TransactionList> {
     );
   }
 }
-
-// popoutfuction(BuildContext context) {
-//   return Navigator.of(context).pop();
-// }
-
-// String parseDate(DateTime date) {
-//   return '${date.year} ${DateFormat.MMMd().format(date)}-${day[date.weekday - 1]}';
-// }

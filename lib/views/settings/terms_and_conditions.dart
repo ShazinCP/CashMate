@@ -1,3 +1,4 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:flutter/material.dart';
 
 class Terms extends StatelessWidget {
@@ -8,13 +9,12 @@ class Terms extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color(0xff368983),
-            title: const Center(
-              child: Text(
-                "Terms & Conditions",
-                style: TextStyle(fontSize: 25),
-              ),
+            backgroundColor: cAppThemeColor,
+            title: const Text(
+              "Terms & Conditions",
+              style: TextStyle(fontSize: 25),
             ),
+            centerTitle: true,
           ),
           body: ListView(
             children: const [
@@ -26,7 +26,7 @@ class Terms extends StatelessWidget {
                   'CashMate',
                   style: TextStyle(
                     fontSize: 24,
-                    color: Color.fromARGB(255, 208, 160, 14),
+                    color: cYellowARGBColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -63,7 +63,7 @@ class Terms extends StatelessWidget {
                 
                 10.Your use of this app and any dispute arising out of such use of the app is subject to the laws of India.
                 """,
-                  style: TextStyle(fontSize: 15, color: Colors.black87),
+                  style: TextStyle(fontSize: 15, color: cBlackColor87),
                 ),
               ),
             ],

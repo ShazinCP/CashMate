@@ -1,3 +1,4 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,7 @@ class _EditTransactionState extends State<EditTransaction> {
   // ignore: unused_field
   DateTime? _selectedDateTime;
   String? _selectedtype;
-  // ignore: unused_field
   String? _selectedCategory;
-  // CategoryModel? _selectedCategoryModel;
-  //String? _categoryID;
   // ignore: unused_field
   int _value = 0;
   TextEditingController _amountTextEditingController = TextEditingController();
@@ -62,7 +60,7 @@ class _EditTransactionState extends State<EditTransaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: cGreyColorWithShade,
       body: SafeArea(
           child: Stack(
         alignment: AlignmentDirectional.center,
@@ -82,9 +80,7 @@ class _EditTransactionState extends State<EditTransaction> {
     final Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Colors.white),
-      /*  height: 550,
-      width: 340, */
+          borderRadius: BorderRadius.circular(20), color: cWhiteColor),
       height: size.height * 0.7,
       width: size.width * 0.9,
       child: Form(
@@ -122,7 +118,7 @@ class _EditTransactionState extends State<EditTransaction> {
                   submitEditIncomeTransaction();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      backgroundColor:  Color.fromARGB(255, 63, 173, 67),
+                      backgroundColor:  cGreenARGBColor2,
                         content: Center(child: Text('Transaction Edited Successfully'))),
                   );
                 }
@@ -131,7 +127,7 @@ class _EditTransactionState extends State<EditTransaction> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: const Color(0xff368983),
+                  color: cAppThemeColor,
                 ),
                 width: 120,
                 height: 50,
@@ -140,7 +136,7 @@ class _EditTransactionState extends State<EditTransaction> {
                   style: TextStyle(
                     fontFamily: 'f',
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: cWhiteColor,
                     fontSize: 17,
                   ),
                 ),
@@ -160,7 +156,7 @@ class _EditTransactionState extends State<EditTransaction> {
       alignment: Alignment.bottomLeft,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 2, color: Colors.grey)),
+          border: Border.all(width: 2, color: cGreyColor)),
       width: 300,
       child: TextButton(
         //child: Text('${widget.obj.datetime}'),
@@ -182,8 +178,7 @@ class _EditTransactionState extends State<EditTransaction> {
           'Date : ${date.year}/${date.month}/${date.day}',
           style: const TextStyle(
               fontSize: 16,
-              //fontWeight: FontWeight.normal,
-              color: Colors.black),
+              color: cBlackColor),
         ),
       ),
     );
@@ -199,21 +194,19 @@ class _EditTransactionState extends State<EditTransaction> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               width: 2,
-              color: Colors.grey,
+              color: cGreyColor,
             ),
           ),
           child: SingleChildScrollView(
             child: DropdownButtonFormField<String>(
               hint: Row(
                 children: [
-                  // ignore: sized_box_for_whitespace
-                  Container(
+                  SizedBox(
                     width: 40,
                     child: Image.asset('pictures/${widget.obj.type}.png'),
                   ),
-                  // ignore: unnecessary_string_interpolations
-                  Text('${widget.obj.type}',
-                      style: const TextStyle(color: Colors.black)),
+                  Text(widget.obj.type,
+                      style: const TextStyle(color: cBlackColor)),
                 ],
               ),
               value: _selectedtype,
@@ -246,16 +239,8 @@ class _EditTransactionState extends State<EditTransaction> {
                       ))
                   .toList(),
 
-              dropdownColor: Colors.white,
+              dropdownColor: cWhiteColor,
               isExpanded: true,
-              //underline: Container(),
-              // validator: (value) {
-              //   if (value == null || value.isEmpty) {
-              //     return 'Select finanace';
-              //   } else {
-              //     return null;
-              //   }
-              // },
             ),
           )),
     );
@@ -275,23 +260,22 @@ class _EditTransactionState extends State<EditTransaction> {
             }
           },
           keyboardType: TextInputType.number,
-          //focusNode: amount,
           controller: _amountTextEditingController,
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             labelText: 'Amount',
-            labelStyle: const TextStyle(fontSize: 17, color: Colors.grey),
+            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: Colors.black),
+              borderSide: const BorderSide(width: 2, color: cBlackColor),
             ),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: Colors.grey)),
+                borderSide: const BorderSide(width: 2, color: cGreyColor)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: Colors.green)),
+                borderSide: const BorderSide(width: 2, color: cGreenColor)),
           ),
         ),
       ),
@@ -304,23 +288,22 @@ class _EditTransactionState extends State<EditTransaction> {
       child: SizedBox(
         width: 300,
         child: TextField(
-          //focusNode: ex,
           controller: _explainTextEditingController,
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             labelText: 'explain',
-            labelStyle: const TextStyle(fontSize: 17, color: Colors.grey),
+            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: Colors.black),
+              borderSide: const BorderSide(width: 2, color: cBlackColor),
             ),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: Colors.grey)),
+                borderSide: const BorderSide(width: 2, color: cGreyColor)),
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: Colors.green)),
+                borderSide: const BorderSide(width: 2, color: cGreenColor)),
           ),
         ),
       ),
@@ -337,22 +320,20 @@ class _EditTransactionState extends State<EditTransaction> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 2,
-            color: const Color(0xffC5C5C5),
+            color: cWhiteColor2,
           ),
         ),
         child: DropdownButtonFormField<String>(
            hint: Row(
               children: [
-                // ignore: sized_box_for_whitespace
-                Container(
+                SizedBox(
                   width: 40,
                   child: Image.asset('images/${widget.obj.name}.png'),
                 ),
                 Text('${widget.obj.name} ',
-                    style: const TextStyle(color: Colors.black)),
+                    style: const TextStyle(color: cBlackColor)),
               ],
             ),
-          // value: selctedItem,
           onChanged: (value) {
             setState(() {
               _selectedCategory = value!;
@@ -361,6 +342,7 @@ class _EditTransactionState extends State<EditTransaction> {
           items: _item
               .map(
                 (e) => DropdownMenuItem<String>(
+                  value: e,
                   child: Container(
                     alignment: Alignment.center,
                     child: Row(
@@ -377,7 +359,6 @@ class _EditTransactionState extends State<EditTransaction> {
                       ],
                     ),
                   ),
-                  value: e,
                 ),
               )
               .toList(),
@@ -385,7 +366,7 @@ class _EditTransactionState extends State<EditTransaction> {
               .map(
                 (e) => Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 42,
                       child: Image.asset('images/$e.png'),
                     ),
@@ -397,10 +378,10 @@ class _EditTransactionState extends State<EditTransaction> {
               .toList(),
           decoration: const InputDecoration(
             hintText: 'Category',
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(color: cGreyColor),
             border: InputBorder.none,
           ),
-          dropdownColor: Colors.white,
+          dropdownColor: cWhiteColor,
           isExpanded: true,
         ),
       ),
@@ -414,7 +395,7 @@ class _EditTransactionState extends State<EditTransaction> {
           width: double.infinity,
           height: 240,
           decoration: const BoxDecoration(
-            color: Color(0xff368983),
+            color: cAppThemeColor,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -433,7 +414,7 @@ class _EditTransactionState extends State<EditTransaction> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Icon(Icons.arrow_back, color: Colors.white),
+                      child: const Icon(Icons.arrow_back, color: cWhiteColor),
                     ),
                     const Center(
                       child: Text(
@@ -441,12 +422,12 @@ class _EditTransactionState extends State<EditTransaction> {
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                            color: cWhiteColor),
                       ),
                     ),
                     const Icon(
                       Icons.add_task_rounded,
-                      color: Color(0xff368983),
+                      color: cAppThemeColor,
                     )
                   ],
                 ),
@@ -459,14 +440,14 @@ class _EditTransactionState extends State<EditTransaction> {
   }
 
   Future<void> submitEditIncomeTransaction() async {
-    final _explainText = _explainTextEditingController.text;
-    final _amountText = _amountTextEditingController.text;
+    final explainText = _explainTextEditingController.text;
+    final amountText = _amountTextEditingController.text;
 
     final model = MoneyModel(
         type: _selectedtype!,
-        amount: _amountText,
+        amount: amountText,
         datetime: date,
-        explain: _explainText,
+        explain: explainText,
         name: _selectedCategory!,
         id: widget.obj.id);
 

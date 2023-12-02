@@ -27,18 +27,15 @@ class SecondScreen extends StatelessWidget {
               height: 50,
             ),
             const Text(
-              
                '"Track your\nEarnings and\nspending with us."',
               style: TextStyle(fontSize: 37, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
-            // SizedBox(height: screenHeight * .01),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: screenHeight * 0.1
-                      //40
                       ),
                   child: GestureDetector(
                     onTap: () {

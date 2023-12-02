@@ -12,15 +12,11 @@ class ScreenSplash extends StatefulWidget {
 }
 
 class _ScreenSplashState extends State<ScreenSplash> {
+
   @override
   void initState() {
     checkUserLoggedIn();
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -33,11 +29,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
       ),
     ));
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  
 
   Future<void> gotoLogin() async {
     Future.delayed(

@@ -1,17 +1,19 @@
+import 'package:cashmate/helper/colors.dart';
+import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/views/intro/firstscreen.dart';
-import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/views/settings/settings_screen.dart';
 import 'package:cashmate/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingFunctions extends ChangeNotifier {
+class SettingsProvider extends ChangeNotifier {
+  TextEditingController limitchangecontroller = TextEditingController();
   editLimit(BuildContext context) async {
     final sharedPref = await SharedPreferences.getInstance();
     var limitvariable1 = sharedPref.getString('limit')!;
-    limitchangecontroller = TextEditingController(text: limitvariable1);
+    limitchangecontroller =
+        TextEditingController(text: limitvariable1);
     // ignore: use_build_context_synchronously
     showdialog(context);
   }
@@ -33,15 +35,13 @@ class SettingFunctions extends ChangeNotifier {
                   onPressed: () async {
                     var newLimit = limitchangecontroller.text;
                     if (!RegExp(r'^\d+$').hasMatch(newLimit)) {
-                      //Navigator.of(context).push(MaterialPageRoute(builder:Limit()));
-                      // Show an error message
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
                           'Please enter a valide number..!!!',
-                          style: TextStyle(color: Colors.white, fontSize: 17),
+                          style: TextStyle(color: cWhiteColor, fontSize: 17),
                           textAlign: TextAlign.center,
                         ),
-                        backgroundColor: Colors.red,
+                        backgroundColor: cRedColor,
                       ));
                       return;
                     }
@@ -52,13 +52,12 @@ class SettingFunctions extends ChangeNotifier {
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>  BottomBar()),
+                      MaterialPageRoute(builder: (context) => BottomBar()),
                     );
                   },
                   style: const ButtonStyle(
                       backgroundColor:
-                          MaterialStatePropertyAll(Colors.redAccent)),
+                          MaterialStatePropertyAll(cRedAccentColor)),
                   child: const Text('Save'),
                 ),
               )
@@ -74,18 +73,12 @@ class SettingFunctions extends ChangeNotifier {
           return AlertDialog(
             content: const Text(
               'Do you want to Reset the app?',
-              style: TextStyle(color: Colors.black, fontSize: 18),
+              style: TextStyle(color: cBlackColor, fontSize: 18),
             ),
             actions: [
               TextButton(
                   onPressed: (() async {
                     Navigator.of(context).pop();
-
-                    // final categoryDB =
-                    //     await Hive.openBox<CategoryModel>(categoryDBName);
-
-                    // categoryDB.clear();
-
                     final transactionDb =
                         await Hive.openBox<MoneyModel>(transactionDBName);
 
@@ -100,8 +93,6 @@ class SettingFunctions extends ChangeNotifier {
                         builder: (context) => const FirstScreen(),
                       ),
                     );
-
-                    // CategoryDB().categoryNotifier.notifyListeners();
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
                     await pref.clear();
@@ -109,7 +100,7 @@ class SettingFunctions extends ChangeNotifier {
                   child: const Text(
                     'Yes',
                     style: TextStyle(
-                      color: Colors.red,
+                      color: cRedColor,
                     ),
                   )),
               TextButton(
@@ -118,7 +109,7 @@ class SettingFunctions extends ChangeNotifier {
                 }),
                 child: const Text(
                   'No',
-                  style: TextStyle(color: Colors.green),
+                  style: TextStyle(color: cGreenColor),
                 ),
               ),
             ],

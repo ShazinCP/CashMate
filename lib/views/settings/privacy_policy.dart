@@ -1,4 +1,5 @@
 
+import 'package:cashmate/helper/colors.dart';
 import 'package:flutter/material.dart';
 
 class PrivacyPolicy extends StatelessWidget {
@@ -9,13 +10,12 @@ class PrivacyPolicy extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
        appBar: AppBar(
-        backgroundColor: const Color(0xff368983),
-        title: const Center(
-          child: Text(
-            "Privacy Policy",
-            style: TextStyle(fontSize: 25),
-          ),
+        backgroundColor: cAppThemeColor,
+        title: const Text(
+          "Privacy Policy",
+          style: TextStyle(fontSize: 25),
         ),
+        centerTitle: true,
       ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -45,7 +45,7 @@ class PrivacyPolicy extends StatelessWidget {
               If you have any questions about this privacy policy or how we use your information, please contact us.
                         
               """,
-                    style: TextStyle(fontSize: 15, color: Colors.black87)),
+                    style: TextStyle(fontSize: 15, color: cBlackColor87)),
               ),
             ],
           ),

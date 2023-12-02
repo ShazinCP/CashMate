@@ -1,3 +1,5 @@
+import 'package:cashmate/constants/sizedbox.dart';
+import 'package:cashmate/helper/colors.dart';
 import 'package:flutter/material.dart';
 
 class About extends StatelessWidget {
@@ -7,29 +9,28 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.grey,
+          backgroundColor: cGreyColor,
           appBar: AppBar(
-            backgroundColor: const Color(0xff368983),
-            title: const Center(
-              child: Text(
-                "About",
-                style: TextStyle(fontSize: 25),
-              ),
+            backgroundColor: cAppThemeColor,
+            title: const Text(
+              "About",
+              style: TextStyle(fontSize: 25),
             ),
+            centerTitle: true,
           ),
           body: Center(
             child: Container(
               width: 250,
               height: 300,
-              color: Colors.grey,
+              color: cGreyColor,
               child: Material(
                 borderRadius: BorderRadius.circular(20),
                 elevation: 10,
-                shadowColor: Colors.white,
+                shadowColor: cWhiteColor,
                 child: Column(
                   children: [
                     Title(
-                        color: Colors.black,
+                        color: cBlackColor,
                         child: const Padding(
                           padding: EdgeInsets.only(top: 30, left: 10),
                           child: Text(
@@ -38,9 +39,7 @@ class About extends StatelessWidget {
                                 fontSize: 25, fontWeight: FontWeight.w500),
                           ),
                         )),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                  cHeight30,
                     const Padding(
                       padding: EdgeInsets.only(left: 15, right: 10),
                       child: Text(
@@ -49,11 +48,9 @@ class About extends StatelessWidget {
                         style: TextStyle(fontSize: 17),
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
+                  cHeight40,
                     const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'Developed by',
@@ -61,11 +58,13 @@ class About extends StatelessWidget {
                         ),
                       ],
                     ),
+                    cHeight5,
                     const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Center(
                           child: Text(
-                            'Shazin Muhammed.Cp',
+                            'Shazin Muhammed Cp',
                             style: TextStyle(
                                 fontSize: 19, fontWeight: FontWeight.bold),
                           ),

@@ -29,9 +29,7 @@ class ThirdScreen extends StatelessWidget {
                 width: screenWidth * 0.8,
               ),
             ),
-            //SizedBox(height: screenHeight * .04),
             SizedBox(
-              // padding: EdgeInsets.only(top: screenHeight * 0.04),
               width: screenWidth * 0.7,
               height: screenHeight * 0.25,
               child: const Text(
@@ -41,11 +39,9 @@ class ThirdScreen extends StatelessWidget {
                   color: Colors.black,
                   fontSize: 35,
                   fontWeight: FontWeight.w500
-                  //24,
                 ),
               ),
             ),
-            // SizedBox(height: screenHeight * .03),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

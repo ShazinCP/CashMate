@@ -1,130 +1,5 @@
-// import 'package:flutter/material.dart';
-
-// class StatisticsScreen extends StatefulWidget {
-//   const StatisticsScreen({super.key});
-
-//   @override
-//   State<StatisticsScreen> createState() => _StatisticsScreenState();
-// }
-
-// class _StatisticsScreenState extends State<StatisticsScreen> {
-//   var selectedOption;
-
-//   List<String> titles = ['All', 'Income', 'Expence'];
-
-//   int current = 0;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child: Scaffold(
-//         appBar: AppBar(
-//           backgroundColor: const Color(0xff368983),
-//           title: const Center(
-//             child: Text(
-//               "Statistics",
-//               style: TextStyle(fontSize: 25),
-//             ),
-//           ),
-//         ),
-//         body: Column(
-//           children: [
-//             Row(
-//               children: [
-//                 const Text(
-//                   "  Date",
-//                   style: TextStyle(fontSize: 18),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.only(left: 8, top: 2),
-//                   child: DropdownButton<String>(
-//                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-//                     value: selectedOption,
-//                     onChanged: (var newValue) {
-//                       setState(() {
-//                         selectedOption = newValue;
-//                       });
-//                     },
-//                     hint: const Text("All",style: TextStyle(color: Colors.black),),
-//                     items: <String>['All', 'Today', 'Yesterday', 'Month']
-//                         .map<DropdownMenuItem<String>>((String value) {
-//                       return DropdownMenuItem<String>(
-//                         value: value,
-//                         child: Text(value),
-//                       );
-//                     }).toList(),
-//                     style: const TextStyle(
-//                       color: Colors.black,
-//                       fontSize: 16,
-//                     ),
-//                     dropdownColor: Colors.white,
-//                     underline: Container(),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             SizedBox(
-//               height: 60,
-//               width: 400,
-//               child: ListView.builder(
-//                 itemCount: titles.length,
-//                 scrollDirection: Axis.horizontal,
-//                 itemBuilder: (ctx, index) {
-//                   return Padding(
-//                     padding: const EdgeInsets.only(left: 10, top: 10),
-//                     child: GestureDetector(
-//                       onTap: () {
-//                         setState(() {
-//                           current = index;
-//                         });
-//                       },
-//                       child: AnimatedContainer(
-//                         duration: const Duration(milliseconds: 300),
-//                         margin: const EdgeInsets.all(3),
-//                         height: 110,
-//                         width: 110,
-//                         decoration: BoxDecoration(
-//                             color: current == index
-//                                 ? Color.fromARGB(255, 21, 126, 119)
-//                                 : Colors.grey[200],
-//                             borderRadius: current == index
-//                                 ? BorderRadius.circular(15)
-//                                 : BorderRadius.circular(8)),
-//                         child: Center(
-//                           child: Text(
-//                             titles[index],
-//                             style:  TextStyle(fontSize: 18,
-//                             color: current == index
-//                             ? Colors.white
-//                             : Colors.black
-//                             ),
-
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(top: 80),
-//               child: Container(
-//                 height: 340,
-//                 width: 340,
-//                 decoration: BoxDecoration(
-//                     color: const Color.fromARGB(255, 42, 172, 163),
-//                     borderRadius: BorderRadius.circular(170)),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/views/statistics/staistics_income.dart';
@@ -155,15 +30,14 @@ class _TransactionInsightsAllState extends State<StatisticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 246, 245, 245),
+      backgroundColor: cWhiteARGBColor3,
       appBar: AppBar(
-        backgroundColor: const Color(0xff368983),
-        title: const Center(
-          child: Text(
-            "Statistics",
-            style: TextStyle(fontSize: 25),
-          ),
+        backgroundColor: cAppThemeColor,
+        title: const Text(
+          "Statistics",
+          style: TextStyle(fontSize: 25),
         ),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -298,11 +172,9 @@ class _TransactionInsightsAllState extends State<StatisticsScreen> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    // transformAlignment: Alignment.center,
-
                     width: double.infinity,
                     child: ButtonsTabBar(
-                      backgroundColor: Colors.amber,
+                      backgroundColor: cAmberColor,
                       contentPadding:
                           const EdgeInsets.symmetric(horizontal: 40),
                       tabs: const [

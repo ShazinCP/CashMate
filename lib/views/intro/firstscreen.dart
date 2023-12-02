@@ -1,3 +1,4 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/views/intro/button.dart';
 import 'package:cashmate/views/intro/secondscreen.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +15,10 @@ class FirstScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.5, // use percentage of screen height
-                width: size.width * 0.9, // use percentage of screen width
+                height: size.height * 0.5,
+                width: size.width * 0.9,
                 child: Padding(
                   padding: EdgeInsets.only(left: size.width * 0.07),
-                  //EdgeInsets.all(size.width * 0.05), // use percentage of screen width
                   child: Container(
                     decoration: const BoxDecoration(
                       image: DecorationImage(
@@ -36,12 +36,11 @@ class FirstScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: size.width * 0.1, // use percentage of screen width
-                  // color: const Color.fromARGB(255, 218, 148, 19),
+                  fontSize: size.width * 0.1,
                   shadows: const <Shadow>[
                     Shadow(
                       offset: Offset(1, 1),
-                      color: Color.fromARGB(255, 218, 148, 19),
+                      color: cYellowARGBColor,
                     ),
                   ],
                 ),
@@ -49,7 +48,7 @@ class FirstScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(
                     top: size.height * 0.1,
-                    left: size.width * 0.07), // use percentage of screen height
+                    left: size.width * 0.07),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -63,7 +62,7 @@ class FirstScreen extends StatelessWidget {
                       size.height * 0.05,
                       'Start',
                       size.width *
-                          0.05), // use percentage of screen width and height
+                          0.05),
                 ),
               ),
             ],

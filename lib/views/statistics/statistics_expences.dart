@@ -1,21 +1,17 @@
+import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/views/statistics/statistics_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class ScreenExpenseChart extends StatefulWidget {
+class ScreenExpenseChart extends StatelessWidget {
   const ScreenExpenseChart({super.key});
 
-  @override
-  State<ScreenExpenseChart> createState() => _ScreenExpenseChartState();
-}
-
-class _ScreenExpenseChartState extends State<ScreenExpenseChart> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 246, 245, 245),
+        backgroundColor: cWhiteARGBColor3,
         body: ValueListenableBuilder(
           valueListenable: overViewGraphNotifier,
           builder: (BuildContext context, List<MoneyModel> newList,

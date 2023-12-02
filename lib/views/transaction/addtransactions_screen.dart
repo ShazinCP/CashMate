@@ -1,9 +1,12 @@
+import 'package:cashmate/constants/sizedbox.dart';
+import 'package:cashmate/controller/transaction_provider.dart';
 import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/services/income_expence.dart';
 import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -14,32 +17,6 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  DateTime date = DateTime.now();
-
-  String? selectedIN;
-
-  final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController explainController = TextEditingController();
-
-  String? selctedItem;
-
-  FocusNode ex = FocusNode();
-
-  final TextEditingController amountcontroller = TextEditingController();
-
-  FocusNode amount = FocusNode();
-
-  final List<String> _iteminex = ['income', 'expense'];
-
-  final List<String> _item = [
-    'food',
-    "Hospital",
-    "Transportation",
-    "Education",
-    "Clothing",
-    "Other"
-  ];
 
   void initstate() {
     super.initState();
@@ -49,15 +26,13 @@ class _AddTransactionState extends State<AddTransaction> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: cGreyColor.shade100,
+      backgroundColor: cGreyColorWithShade,
       body: SafeArea(
           child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
           backgroundContainer(context),
-          Container(
-            child: SingleChildScrollView(child: mainContainer()),
-          )
+          SingleChildScrollView(child: mainContainer())
         ],
       )),
     );
@@ -65,46 +40,36 @@ class _AddTransactionState extends State<AddTransaction> {
 
   Container mainContainer() {
     final Size size = MediaQuery.of(context).size;
+    final provider = Provider.of<TransactionProvider>(context,listen: false);
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: cWhiteColor),
-      // SizedBox(height: screenHeight * .08),
-
-      /* height: 550,
-       width: 340, */
       height: size.height * 0.7,
       width: size.width * 0.9,
       child: Form(
-        key: _formKey,
+        key: provider.formKey,
         child: Column(
           children: [
-            const SizedBox(
-              height: 25,
-            ),
+          cHeight25,
             type(),
-            const SizedBox(
-              height: 20,
-            ),
+          cHeight20,
             name(),
-            const SizedBox(
-              height: 20,
-            ),
+           cHeight20,
             explain(),
-            const SizedBox(
-              height: 20,
-            ),
+           cHeight20,
             transactionAmount(),
-            const SizedBox(
-              height: 20,
-            ),
+            cHeight20,
             dateTime(),
-            const SizedBox(
-              height: 27,
-            ),
+          cHeight27,
             GestureDetector(
               onTap: () {
-                if (_formKey.currentState!.validate()) {
+                if (provider.formKey.currentState!.validate()) {
                   addTransaction();
+                  provider.amountcontroller.clear();
+                  provider.explainController.clear();
+                  provider.selectedItem = null;
+                  provider.selectedType = null;
+                  provider.date = DateTime.now();
                 }
               },
               child: Container(
@@ -126,9 +91,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+          cHeight20,
           ],
         ),
       ),
@@ -142,130 +105,139 @@ class _AddTransactionState extends State<AddTransaction> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(width: 2, color: cGreyColor)),
         width: 300,
-        child: TextButton(
-          onPressed: () async {
-            DateTime? newDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2100));
-
-            if (newDate == null) {
-              return;
-            } else {
-              setState(() {
-                date = newDate;
-              });
-            }
+        child: Consumer<TransactionProvider>(
+          builder: (context, provider, child) {
+            return TextButton(
+            onPressed: () async {
+              DateTime? newDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2100));
+        
+              if (newDate == null) {
+                return;
+              } else {
+              provider.setDate(newDate);
+              }
+            },
+            child: Text(
+              'Date : ${provider.date.year}/${provider.date.month}/${provider.date.day}',
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: cBlackColor),
+            ),
+          );
           },
-          child: Text(
-            'Date : ${date.year}/${date.month}/${date.day}',
-            style: const TextStyle(
-                fontSize: 16,
-                color: cBlackColor),
-          ),
+        
         ));
   }
 
   Padding type() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
-          width: 300,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 2,
-                color: cGreyColor,
-              )),
-          child: DropdownButtonFormField<String>(
-            value: selectedIN,
-
-            onChanged: ((value) {
-              setState(() {
-                selectedIN = value!;
-              });
-            }),
-            items: _iteminex
-                .map((e) => DropdownMenuItem(
-                      value: e,
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'pictures/$e.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            e,
-                            style: const TextStyle(fontSize: 17),
-                          )
-                        ],
-                      ),
-                    ))
-                .toList(),
-
-            hint: const Text(
-              'Select',
-              style: TextStyle(color: cGreyColor),
-            ),
-            dropdownColor: cWhiteColor,
-            isExpanded: true,
-            //underline: Container(),
-            // validator: (value) {
-            //   if (value == null || value.isEmpty) {
-            //     return 'Select type';
-            //   } else {
-            //     return null;
-            //   }
-            // },
-          )),
+      child: Consumer<TransactionProvider>(
+        builder: (context, provider, child) {
+          return Container(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
+            width: 300,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  width: 2,
+                  color: cGreyColor,
+                )),
+            child: DropdownButtonFormField<String>(
+              value: provider.selectedType,
+      
+              onChanged: ((value) {
+               provider.setSelectedType(value!);
+              }),
+              items: provider.iteminex
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'pictures/$e.png',
+                              width: 30,
+                              height: 30,
+                            ),
+                          cHeight10,
+                            Text(
+                              e,
+                              style: const TextStyle(fontSize: 17),
+                            )
+                          ],
+                        ),
+                      ))
+                  .toList(),
+      
+              hint: const Text(
+                'Select',
+                style: TextStyle(color: cGreyColor),
+              ),
+              dropdownColor: cWhiteColor,
+              isExpanded: true,
+              //underline: Container(),
+              // validator: (value) {
+              //   if (value == null || value.isEmpty) {
+              //     return 'Select type';
+              //   } else {
+              //     return null;
+              //   }
+              // },
+            ));
+        },
+        
+      ),
     );
   }
 
   Padding transactionAmount() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: SizedBox(
-        width: 300,
-        child: TextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Select Amount';
-            } else if (value.contains(',')) {
-              return 'Please remove special character';
-            } else if (value.contains('.')) {
-              return 'Please remove special character';
-            } else if (value.contains(' ')) {
-              return 'Please Enter a valid number';
-            } else {
-              return null;
-            }
-          },
-          keyboardType: TextInputType.number,
-          focusNode: amount,
-          controller: amountcontroller,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            labelText: 'Amount',
-            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: cBlackColor),
-            ),
-            enabledBorder: OutlineInputBorder(
+      child: Consumer<TransactionProvider>(
+        builder: (context, provider, child) {
+          return  SizedBox(
+          width: 300,
+          child: TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Select Amount';
+              } else if (value.contains(',')) {
+                return 'Please remove special character';
+              } else if (value.contains('.')) {
+                return 'Please remove special character';
+              } else if (value.contains(' ')) {
+                return 'Please Enter a valid number';
+              } else {
+                return null;
+              }
+            },
+            keyboardType: TextInputType.number,
+            focusNode: provider.amount,
+            controller: provider.amountcontroller,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              labelText: 'Amount',
+              labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: cGreyColor)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: cGreenColor)),
+                borderSide: const BorderSide(width: 2, color: cBlackColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(width: 2, color: cGreyColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(width: 2, color: cGreenColor)),
+            ),
           ),
-        ),
+        );
+        },
+     
       ),
     );
   }
@@ -273,28 +245,33 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding explain() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: SizedBox(
-        width: 300,
-        child: TextField(
-          focusNode: ex,
-          controller: explainController,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            labelText: 'explain',
-            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: cBlackColor),
-            ),
-            enabledBorder: OutlineInputBorder(
+      child: Consumer<TransactionProvider>(
+        builder: (context, provider, child) {
+          return SizedBox(
+          width: 300,
+          child: TextField(
+            focusNode: provider.ex,
+            controller: provider.explainController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              labelText: 'explain',
+              labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: cGreyColor)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: cGreenColor)),
+                borderSide: const BorderSide(width: 2, color: cBlackColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(width: 2, color: cGreyColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(width: 2, color: cGreenColor)),
+            ),
           ),
-        ),
+        );
+        },
+        
       ),
     );
   }
@@ -302,68 +279,71 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding name() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        width: 300,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            width: 2,
-            color: cWhiteColor2,
+      child: Consumer<TransactionProvider>(
+        builder: (context, provider, child) {
+          return  Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: cWhiteColor2,
+            ),
           ),
-        ),
-        child: DropdownButtonFormField<String>(
-          value: selctedItem,
-          onChanged: (value) {
-            setState(() {
-              selctedItem = value!;
-            });
-          },
-          items: _item
-              .map(
-                (e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                          child: Image.asset('images/$e.png'),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          e,
-                          style: const TextStyle(fontSize: 18),
-                        )
-                      ],
+          child: DropdownButtonFormField<String>(
+            value: provider.selectedItem,
+            onChanged: (value) {
+             provider.setSelectedItem(value!);
+            },
+            items: provider.item
+                .map(
+                  (e) => DropdownMenuItem<String>(
+                    value: e,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
+                            child: Image.asset('images/$e.png'),
+                          ),
+                         cHeight10,
+                          Text(
+                            e,
+                            style: const TextStyle(fontSize: 18),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-              .toList(),
-          selectedItemBuilder: (BuildContext context) => _item
-              .map(
-                (e) => Row(
-                  children: [
-                    SizedBox(
-                      width: 42,
-                      child: Image.asset('images/$e.png'),
-                    ),
-                    const SizedBox(width: 5),
-                    Text(e),
-                  ],
-                ),
-              )
-              .toList(),
-          decoration: const InputDecoration(
-            hintText: 'Category',
-            hintStyle: TextStyle(color: cGreyColor),
-            border: InputBorder.none,
+                )
+                .toList(),
+            selectedItemBuilder: (BuildContext context) => provider.item
+                .map(
+                  (e) => Row(
+                    children: [
+                      SizedBox(
+                        width: 42,
+                        child: Image.asset('images/$e.png'),
+                      ),
+                     cWidth5,
+                      Text(e),
+                    ],
+                  ),
+                )
+                .toList(),
+            decoration: const InputDecoration(
+              hintText: 'Category',
+              hintStyle: TextStyle(color: cGreyColor),
+              border: InputBorder.none,
+            ),
+            dropdownColor: cWhiteColor,
+            isExpanded: true,
           ),
-          dropdownColor: cWhiteColor,
-          isExpanded: true,
-        ),
+        );
+        },
+        
       ),
     );
   }
@@ -383,7 +363,7 @@ class _AddTransactionState extends State<AddTransaction> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              cHeight40,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
@@ -420,15 +400,17 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   Future addTransaction() async {
+    final provider = Provider.of<TransactionProvider>(context,listen: false);
     final model = MoneyModel(
-        type: selectedIN!,
-        amount: amountcontroller.text,
-        datetime: date,
-        explain: explainController.text,
-        name: selctedItem!,
+        type: provider.selectedType!,
+        amount: provider.amountcontroller.text,
+        datetime: provider.date,
+        explain: provider.explainController.text,
+        name: provider.selectedItem!,
         id: DateTime.now().microsecondsSinceEpoch.toString());
 
     await TransactionDB().insertTransaction(model);
+
 
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -447,7 +429,7 @@ class _AddTransactionState extends State<AddTransaction> {
         backgroundColor: cAppThemeColor,
       ),
     );
-    limitCheck(selectedIN!);
+    limitCheck(provider.selectedType!);
   }
 
   limitCheck(String finance) async {

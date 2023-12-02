@@ -2,15 +2,10 @@ import 'package:cashmate/views/transaction/transactions_screen.dart';
 import 'package:cashmate/services/transactionDB.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
+class SearchField extends StatelessWidget {
+   SearchField({super.key});
 
-class SearchField extends StatefulWidget {
-  const SearchField({super.key});
-
-  @override
-  State<SearchField> createState() => _SearchFieldState();
-}
-
-class _SearchFieldState extends State<SearchField> {
   TextEditingController searchQueryController = TextEditingController();
 
   @override
@@ -27,16 +22,13 @@ class _SearchFieldState extends State<SearchField> {
           child: TextField(
             controller: searchQueryController,
             onChanged: (query) {
-              //print('$query');
               searchResult(query);
-              // overViewListNotifier.notifyListeners();
             },
             decoration: InputDecoration(
                 hintText: 'Search..',
                 border: InputBorder.none,
                 icon: const Icon(
                   Icons.search,
-                  // color: textClr,
                 ),
                 suffixIcon: IconButton(
                     onPressed: () {
@@ -46,7 +38,6 @@ class _SearchFieldState extends State<SearchField> {
                     },
                     icon: const Icon(
                       Icons.close,
-                      // color: Colors.black,
                     ))),
           ),
         ),

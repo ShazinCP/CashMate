@@ -10,14 +10,14 @@ class MoneyModel extends HiveObject {
   @HiveField(2)
   String amount;
   @HiveField(3)
-  String IN;
+  String type;
   @HiveField(4)
   DateTime datetime;
   @HiveField(5)
   String id;
 
   MoneyModel(
-    {required this.IN, 
+    {required this.type, 
     required this.amount, 
     required this.datetime, 
     required this.explain, 

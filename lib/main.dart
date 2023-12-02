@@ -1,6 +1,6 @@
-import 'package:cashmate/db_functions/transactionDB.dart';
+import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/views/widgets/splash_screen.dart';
+import 'package:cashmate/widgets/splash_screen.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:flutter/material.dart';
 

@@ -17,7 +17,7 @@ class MoneyModelAdapter extends TypeAdapter<MoneyModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MoneyModel(
-      IN: fields[3] as String,
+      type: fields[3] as String,
       amount: fields[2] as String,
       datetime: fields[4] as DateTime,
       explain: fields[1] as String,
@@ -37,7 +37,7 @@ class MoneyModelAdapter extends TypeAdapter<MoneyModel> {
       ..writeByte(2)
       ..write(obj.amount)
       ..writeByte(3)
-      ..write(obj.IN)
+      ..write(obj.type)
       ..writeByte(4)
       ..write(obj.datetime)
       ..writeByte(5)

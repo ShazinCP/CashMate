@@ -1,8 +1,8 @@
-import 'package:cashmate/controller/transaction_provider.dart';
+import 'package:cashmate/controller/provider_transaction.dart';
+import 'package:cashmate/controller/transactiondb_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/widgets/edit_screen.dart';
+import 'package:cashmate/views/transaction/edit_transaction/edit_screen.dart';
 import 'package:cashmate/widgets/uppercase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -34,7 +34,8 @@ class SlidableTransaction extends StatelessWidget {
         ),
         SlidableAction(
           onPressed: ((context) async {
-            await TransactionDB().deleteTransaction(transaction);
+            final value = Provider.of<TransactionDBProvider>(context,listen: false);
+            await value.deleteTransaction(transaction);
             // ignore: use_build_context_synchronously
             Navigator.of(context).pop();
           }),
@@ -46,11 +47,9 @@ class SlidableTransaction extends StatelessWidget {
         color: cWhiteColor,
         elevation: 3,
         shape: RoundedRectangleBorder(
-          //<-- SEE HERE
-          // side: BorderSide(width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Consumer<TransactionProvider>(
+        child: Consumer<ProviderTransaction>(
           builder: (context, provider, child) {
             return    ListTile(
             leading: ClipRRect(
@@ -82,7 +81,6 @@ class SlidableTransaction extends StatelessWidget {
             ),
           );
           },
-       
         ),
       ),
     );

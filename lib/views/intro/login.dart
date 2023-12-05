@@ -63,12 +63,13 @@ class Login extends StatelessWidget {
                       onTap: () {
                         if (provider.formKey.currentState!.validate()) {
                           checkLogin(context);
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BottomBar()),
                           );
                         }
+                        provider.usernameController.clear();
                       },
                       child: Container(
                         alignment: Alignment.center,

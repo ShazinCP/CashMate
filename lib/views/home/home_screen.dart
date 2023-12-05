@@ -1,13 +1,12 @@
+import 'package:cashmate/controller/provider_transaction.dart';
+import 'package:cashmate/controller/transactiondb_provider.dart';
+import 'package:cashmate/controller/utility_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/services/income_expence.dart';
-import 'package:cashmate/services/transactionDB.dart';
-import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/views/transaction/transactions_screen.dart';
-import 'package:cashmate/views/home/home_head.dart';
+import 'package:cashmate/views/transaction/widgets/transaction_all.dart';
+import 'package:cashmate/views/home/widgets/home_head.dart';
 import 'package:cashmate/widgets/uppercase.dart';
 import 'package:flutter/material.dart';
-
-final List<String> day = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,20 +16,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var displayList = [];
-
   @override
   void initState() {
-    overViewListNotifier.value =
-        TransactionDB.instance.transactionListNotifier.value;
     super.initState();
-    TransactionDB().transactionListNotifier;
-    setState(() {});
+    final provider = Provider.of<TransactionDBProvider>(context, listen: false);
+    provider.getAllTransactions();
   }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
     final Size size = MediaQuery.of(context).size;
     final double screenWidth = size.width;
     final double screenHeight = size.height;
@@ -38,17 +32,17 @@ class _HomeScreenState extends State<HomeScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
-          child: ValueListenableBuilder(
-            valueListenable: TransactionDB.instance.transactionListNotifier,
-            builder: (context, value, index) {
+          child: Consumer<TransactionDBProvider>(
+            builder: (context, provider, index) {
               return Column(
                 children: [
                   SizedBox(
-                      height: screenHeight * .44,
-                      width: screenWidth,
-                      child: HomeHead(
-                        key: UniqueKey(),
-                      )),
+                    height: screenHeight * .44,
+                    width: screenWidth,
+                    child: HomeHead(
+                      key: UniqueKey(),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
@@ -58,31 +52,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 17,
-                                color: Color.fromARGB(255, 15, 14, 14))),
+                                color: cBlackARGBColor2)),
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const Transactions()));
+                                builder: (context) => const TransactionAll()));
                           },
                           child: const Text('See all',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,
-                                  color: Color.fromARGB(255, 15, 14, 14))),
+                                  color: cBlackARGBColor2)),
                         )
                       ],
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      color: Colors.white24,
+                      color: cWhiteColor24,
                       height: 300,
-                      child: ValueListenableBuilder(
-                        valueListenable:
-                            TransactionDB.instance.transactionListNotifier,
-                        builder: (BuildContext ctx, List<MoneyModel> newList,
-                            Widget? _) {
-                          return (newList.isEmpty)
+                      child: Consumer2<TransactionDBProvider,UtilityProvider>(
+                        builder: (context, provider,provider2, child) {
+                          return (provider.transactionList.isEmpty)
                               ? Column(
                                   children: [
                                     SizedBox(height: screenHeight / 14),
@@ -101,45 +92,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.all(5),
                                   itemBuilder: (ctx, index) {
                                     final int lastIndex =
-                                        transactionDB.length - 1;
+                                        provider2.transactionDB.length - 1;
                                     final int reversedIndex = lastIndex - index;
-                                    final value = newList[reversedIndex];
+                                    final value =
+                                        provider.transactionList[reversedIndex];
                                     return Card(
-                                      color: const Color.fromARGB(
-                                          255, 248, 246, 246),
+                                      color: cWhiteARGBColor5,
                                       elevation: 0,
-                                      child: ListTile(
-                                        leading: CircleAvatar(
-                                          backgroundColor: const Color.fromARGB(
-                                              255, 244, 240, 228),
-                                          radius: 50,
-                                          child: Image.asset(
-                                              'images/${value.name}.png',
-                                              height: 40),
-                                        ),
-                                        title: Text(
-                                          value.explain.capitalize(),
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        subtitle: Text(
-                                          '${value.datetime.year}-${value.datetime.day}-${value.datetime.month}  ${day[value.datetime.weekday - 1]}',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 13),
-                                        ),
-                                        trailing: Text(
-                                          value.amount,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 19,
-                                            color: value.type == 'income'
-                                                ? cGreenColor
-                                                : cRedColor,
-                                          ),
-                                        ),
+                                      child: Consumer<ProviderTransaction>(
+                                        builder: (context, provider, child) {
+                                          return ListTile(
+                                            leading: CircleAvatar(
+                                              backgroundColor: cWhiteARGBColor4,
+                                              radius: 50,
+                                              child: Image.asset(
+                                                  'images/${value.name}.png',
+                                                  height: 40),
+                                            ),
+                                            title: Text(
+                                              value.explain.capitalize(),
+                                              style: const TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              '${value.datetime.year}-${value.datetime.day}-${value.datetime.month}  ${provider.days[value.datetime.weekday - 1]}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 13),
+                                            ),
+                                            trailing: Text(
+                                              value.amount,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 19,
+                                                color: value.type == 'income'
+                                                    ? cGreenColor
+                                                    : cRedColor,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     );
                                   },
@@ -149,8 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       thickness: 2,
                                     );
                                   },
-                                  itemCount:
-                                      newList.length > 4 ? 4 : newList.length,
+                                  itemCount: provider.transactionList.length > 4
+                                      ? 4
+                                      : provider.transactionList.length,
                                 );
                         },
                       ),

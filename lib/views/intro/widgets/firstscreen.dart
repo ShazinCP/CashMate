@@ -1,6 +1,6 @@
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/views/intro/button.dart';
-import 'package:cashmate/views/intro/secondscreen.dart';
+import 'package:cashmate/views/intro/widgets/button.dart';
+import 'package:cashmate/views/intro/widgets/secondscreen.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatelessWidget {
@@ -51,7 +51,7 @@ class FirstScreen extends StatelessWidget {
                     left: size.width * 0.07),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const SecondScreen()),

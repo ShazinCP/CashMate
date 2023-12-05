@@ -1,9 +1,9 @@
 import 'package:cashmate/constants/sizedbox.dart';
 import 'package:cashmate/controller/settings_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/views/settings/about.dart';
-import 'package:cashmate/views/settings/privacy_policy.dart';
-import 'package:cashmate/views/settings/terms_and_conditions.dart';
+import 'package:cashmate/views/settings/widgets/about.dart';
+import 'package:cashmate/views/settings/widgets/privacy_policy.dart';
+import 'package:cashmate/views/settings/widgets/terms_and_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

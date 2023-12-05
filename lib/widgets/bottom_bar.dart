@@ -1,6 +1,6 @@
 import 'package:cashmate/controller/bottombar_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/views/transaction/addtransactions_screen.dart';
+import 'package:cashmate/views/transaction/add_transaction/addtransactions_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stylish_bottom_bar/model/bar_items.dart';

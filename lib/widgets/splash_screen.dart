@@ -1,4 +1,4 @@
-import 'package:cashmate/views/intro/firstscreen.dart';
+import 'package:cashmate/views/intro/widgets/firstscreen.dart';
 import 'package:cashmate/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

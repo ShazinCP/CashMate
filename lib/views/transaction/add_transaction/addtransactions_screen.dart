@@ -1,8 +1,8 @@
 import 'package:cashmate/constants/sizedbox.dart';
-import 'package:cashmate/controller/transaction_provider.dart';
+import 'package:cashmate/controller/provider_transaction.dart';
+import 'package:cashmate/controller/transactiondb_provider.dart';
+import 'package:cashmate/controller/utility_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/services/income_expence.dart';
-import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:cashmate/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   void initstate() {
     super.initState();
-    IncomeAndExpence().income();
+    UtilityProvider().income();
   }
 
   @override
@@ -40,7 +40,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
   Container mainContainer() {
     final Size size = MediaQuery.of(context).size;
-    final provider = Provider.of<TransactionProvider>(context,listen: false);
+    final provider = Provider.of<ProviderTransaction>(context,listen: false);
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: cWhiteColor),
@@ -105,7 +105,7 @@ class _AddTransactionState extends State<AddTransaction> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(width: 2, color: cGreyColor)),
         width: 300,
-        child: Consumer<TransactionProvider>(
+        child: Consumer<ProviderTransaction>(
           builder: (context, provider, child) {
             return TextButton(
             onPressed: () async {
@@ -136,7 +136,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding type() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Consumer<TransactionProvider>(
+      child: Consumer<ProviderTransaction>(
         builder: (context, provider, child) {
           return Container(
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
@@ -197,7 +197,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding transactionAmount() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Consumer<TransactionProvider>(
+      child: Consumer<ProviderTransaction>(
         builder: (context, provider, child) {
           return  SizedBox(
           width: 300,
@@ -245,7 +245,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding explain() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Consumer<TransactionProvider>(
+      child: Consumer<ProviderTransaction>(
         builder: (context, provider, child) {
           return SizedBox(
           width: 300,
@@ -279,7 +279,7 @@ class _AddTransactionState extends State<AddTransaction> {
   Padding name() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Consumer<TransactionProvider>(
+      child: Consumer<ProviderTransaction>(
         builder: (context, provider, child) {
           return  Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -400,23 +400,24 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   Future addTransaction() async {
-    final provider = Provider.of<TransactionProvider>(context,listen: false);
+    final transactionProvider = Provider.of<ProviderTransaction>(context,listen: false);
+    final dbProvider = Provider.of<TransactionDBProvider>(context,listen: false);
     final model = MoneyModel(
-        type: provider.selectedType!,
-        amount: provider.amountcontroller.text,
-        datetime: provider.date,
-        explain: provider.explainController.text,
-        name: provider.selectedItem!,
+        type: transactionProvider.selectedType!,
+        amount: transactionProvider.amountcontroller.text,
+        datetime: transactionProvider.date,
+        explain: transactionProvider.explainController.text,
+        name: transactionProvider.selectedItem!,
         id: DateTime.now().microsecondsSinceEpoch.toString());
 
-    await TransactionDB().insertTransaction(model);
+    await dbProvider.insertTransaction(model);
 
 
     // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => BottomBar(),
     ));
-    TransactionDB.instance.getAllTransactions();
+    dbProvider.getAllTransactions();
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -429,7 +430,7 @@ class _AddTransactionState extends State<AddTransaction> {
         backgroundColor: cAppThemeColor,
       ),
     );
-    limitCheck(provider.selectedType!);
+    limitCheck(transactionProvider.selectedType!);
   }
 
   limitCheck(String finance) async {
@@ -437,7 +438,7 @@ class _AddTransactionState extends State<AddTransaction> {
       final sharedPref = await SharedPreferences.getInstance();
       var limitvariable = sharedPref.getString('limit');
 
-      int expense1 = IncomeAndExpence().expense();
+      int expense1 = UtilityProvider().expense();
       // ignore: use_build_context_synchronously
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => BottomBar()));

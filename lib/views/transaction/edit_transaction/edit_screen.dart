@@ -1,7 +1,8 @@
+import 'package:cashmate/controller/transactiondb_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/services/transactionDB.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditTransaction extends StatefulWidget {
   final String? id;
@@ -440,6 +441,7 @@ class _EditTransactionState extends State<EditTransaction> {
   }
 
   Future<void> submitEditIncomeTransaction() async {
+    final provider = Provider.of<TransactionDBProvider>(context,listen: false);
     final explainText = _explainTextEditingController.text;
     final amountText = _amountTextEditingController.text;
 
@@ -451,7 +453,7 @@ class _EditTransactionState extends State<EditTransaction> {
         name: _selectedCategory!,
         id: widget.obj.id);
 
-     await TransactionDB.instance.editTransaction(model);
+     await provider.editTransaction(model);
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }

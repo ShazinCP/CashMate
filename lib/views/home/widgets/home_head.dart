@@ -1,6 +1,6 @@
+import 'package:cashmate/controller/utility_provider.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/services/income_expence.dart';
-import 'package:cashmate/views/transaction/addlimit_screen.dart';
+import 'package:cashmate/views/transaction/widgets/addlimit_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeHead extends StatelessWidget {
@@ -109,7 +109,7 @@ class HomeHead extends StatelessWidget {
                   const SizedBox(height: 7),
                   Padding(
                     padding: const EdgeInsets.only(left: 15),
-                    child: Text('₹ ${IncomeAndExpence().total()}',
+                    child: Text('₹ ${UtilityProvider().total()}',
                         style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 19,
@@ -168,12 +168,12 @@ class HomeHead extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('₹ ${IncomeAndExpence().income()}',
+                        Text('₹ ${UtilityProvider().income()}',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 19,
                                 color: cGreenARGBColor)),
-                        Text('₹ ${IncomeAndExpence().expense()}',
+                        Text('₹ ${UtilityProvider().expense()}',
                             style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 19,

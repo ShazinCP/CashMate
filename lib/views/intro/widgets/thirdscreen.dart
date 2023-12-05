@@ -1,4 +1,4 @@
-import 'package:cashmate/views/intro/button.dart';
+import 'package:cashmate/views/intro/widgets/button.dart';
 import 'package:cashmate/views/intro/login.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class ThirdScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: screenHeight * 0.1),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const Login()),
                       );
@@ -67,7 +67,7 @@ class ThirdScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: screenHeight * 0.1),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const Login()),
                       );

@@ -1,15 +1,15 @@
-import 'package:cashmate/services/transactionDB.dart';
+import 'package:cashmate/controller/transactiondb_provider.dart';
 import 'package:cashmate/model/data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
-
+class UtilityProvider extends ChangeNotifier{
 int totals = 0;
 final transactionDB = Hive.box<MoneyModel>(transactionDBName);
 ValueNotifier expenseTotal = ValueNotifier(0.0);
 ValueNotifier incomeTotal = ValueNotifier(0.0);
 
-class IncomeAndExpence {
+
   int total() {
     var history2 = transactionDB.values.toList();
     List a = [0, 0];

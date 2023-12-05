@@ -1,19 +1,20 @@
+import 'package:cashmate/controller/transactiondb_provider.dart';
 import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/model/data_model.dart';
-import 'package:cashmate/services/transactionDB.dart';
-import 'package:cashmate/views/intro/firstscreen.dart';
+import 'package:cashmate/views/intro/widgets/firstscreen.dart';
 import 'package:cashmate/widgets/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SettingsProvider extends ChangeNotifier {
   TextEditingController limitchangecontroller = TextEditingController();
   editLimit(BuildContext context) async {
     final sharedPref = await SharedPreferences.getInstance();
     var limitvariable1 = sharedPref.getString('limit')!;
-    limitchangecontroller =
-        TextEditingController(text: limitvariable1);
+    limitchangecontroller = TextEditingController(text: limitvariable1);
     // ignore: use_build_context_synchronously
     showdialog(context);
   }
@@ -67,6 +68,7 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   resetApp(BuildContext context) {
+    final dBprovider = Provider.of<TransactionDBProvider>(context, listen: false);
     showDialog(
         context: context,
         builder: (ctx) {
@@ -84,8 +86,9 @@ class SettingsProvider extends ChangeNotifier {
 
                     transactionDb.clear();
 
-                    TransactionDB().transactionListNotifier.value.clear();
-                    TransactionDB().transactionListNotifier.notifyListeners();
+                    dBprovider.transactionList.clear();
+
+                    clearSharedPreferences();
 
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pushReplacement(
@@ -116,4 +119,9 @@ class SettingsProvider extends ChangeNotifier {
           );
         });
   }
+}
+
+void clearSharedPreferences() async {
+  final sharedPref = await SharedPreferences.getInstance();
+  sharedPref.clear();
 }

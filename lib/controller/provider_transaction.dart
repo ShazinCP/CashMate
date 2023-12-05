@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
-class TransactionProvider extends ChangeNotifier {
+class ProviderTransaction extends ChangeNotifier {
+TextEditingController limitController = TextEditingController();
+
+  // ignore: prefer_typing_uninitialized_variables
+  var limit;
+
+  // ignore: prefer_typing_uninitialized_variables
+  var expense1;
+
+  TextEditingController searchQueryController = TextEditingController();
+
   final List<String> days = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
 
   DateTime date = DateTime.now();

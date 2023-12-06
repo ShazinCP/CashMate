@@ -1,7 +1,10 @@
+import 'package:cashmate/controller/transactiondb_provider.dart';
+import 'package:cashmate/model/data_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProviderTransaction extends ChangeNotifier {
-TextEditingController limitController = TextEditingController();
+  TextEditingController limitController = TextEditingController();
 
   // ignore: prefer_typing_uninitialized_variables
   var limit;
@@ -29,6 +32,16 @@ TextEditingController limitController = TextEditingController();
 
   FocusNode amount = FocusNode();
 
+  DateTime? selectedEditDateTime;
+
+  String? selectedEditType;
+
+  String? selectedEditCategory;
+
+  TextEditingController amountTextEditingController = TextEditingController();
+
+  TextEditingController explainTextEditingController = TextEditingController();
+
   final List<String> iteminex = ['income', 'expense'];
 
   final List<String> item = [
@@ -54,6 +67,46 @@ TextEditingController limitController = TextEditingController();
 
   void setSelectedItem(String value) {
     selectedItem = value;
+    notifyListeners();
+  }
+
+  searchResult(BuildContext context, String query) {
+    final dbProvider =
+        Provider.of<TransactionDBProvider>(context, listen: false);
+
+    debugPrint('queryprinted  $query');
+    if (query.isEmpty || query == '') {
+      debugPrint(query);
+
+      dbProvider.transactionList = dbProvider.graphList;
+    } else {
+      dbProvider.transactionList = dbProvider.graphList
+          .where((element) =>
+              element.name.toLowerCase().contains(query.trim().toLowerCase()) ||
+              element.explain.contains(query.trim().toLowerCase()))
+          .toList();
+    }
+  }
+
+  List<MoneyModel> taskModelList = <MoneyModel>[];
+
+  List queryResultList = [];
+  String queryval = '';
+  addToQueryList(String query) async {
+    queryResultList.clear();
+
+    if (query.isEmpty || query == '') {
+      queryResultList.clear();
+    } else {
+      for (var element in taskModelList) {
+        if (element.explain
+            .trim()
+            .toLowerCase()
+            .contains(query.trim().toLowerCase())) {
+          queryResultList.add(element.explain);
+        }
+      }
+    }
     notifyListeners();
   }
 }

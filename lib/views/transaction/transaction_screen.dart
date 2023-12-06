@@ -1,7 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:cashmate/constants/sizedbox.dart';
 import 'package:cashmate/helper/colors.dart';
-import 'package:cashmate/views/transaction/widgets/searchfield.dart';
+import 'package:cashmate/widgets/searchfield.dart';
 import 'package:cashmate/views/transaction/widgets/transaction_all.dart';
 import 'package:cashmate/views/transaction/widgets/transaction_expence.dart';
 import 'package:cashmate/views/transaction/widgets/transaction_income.dart';
@@ -24,7 +24,10 @@ class TransactionScreen extends StatelessWidget {
           flexibleSpace: Container(
             color: cAppThemeColor,
           ),
-          title: const Text('Transactions'),
+          title: const Text(
+            'Transactions',
+            style: TextStyle(fontSize: 25),
+          ),
           centerTitle: true,
         ),
         body: Column(
@@ -36,22 +39,24 @@ class TransactionScreen extends StatelessWidget {
                 initialIndex: 0,
                 child: Column(
                   children: <Widget>[
-                    ButtonsTabBar(
-                        backgroundColor: cAmberColor,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                        tabs: const [
-                          Tab(
-                            iconMargin: EdgeInsets.all(30),
-                            text: 'All',
-                          ),
-                          Tab(
-                            text: "Income",
-                          ),
-                          Tab(
-                            text: "Expense",
-                          ),
-                        ]),
+                    SingleChildScrollView(
+                      child: ButtonsTabBar(
+                          backgroundColor: cAmberColor,
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                          tabs: const [
+                            Tab(
+                              iconMargin: EdgeInsets.all(30),
+                              text: 'All',
+                            ),
+                            Tab(
+                              text: "Income",
+                            ),
+                            Tab(
+                              text: "Expense",
+                            ),
+                          ]),
+                    ),
                     SizedBox(
                       height: size.height * 0.02,
                     ),

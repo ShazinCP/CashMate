@@ -42,16 +42,16 @@ List<MoneyModel> searchSongs = [];
     final transactionDB =
         await Hive.openBox<MoneyModel>(transactionDBName);
     transactionDB.delete(transactionModel.id);
-    notifyListeners();
     getAllTransactions();
+    notifyListeners();
   }
 
   Future<void> editTransaction(MoneyModel value) async {
     final transactionDB =
         await Hive.openBox<MoneyModel>(transactionDBName);
     transactionDB.put(value.id, value);
-    notifyListeners();
     getAllTransactions();
+    notifyListeners();
   }
 
   void setAllList(){

@@ -1,3 +1,4 @@
+import 'package:cashmate/controller/provider_transaction.dart';
 import 'package:cashmate/controller/transactiondb_provider.dart';
 import 'package:cashmate/helper/colors.dart';
 import 'package:cashmate/model/data_model.dart';
@@ -19,43 +20,19 @@ class EditTransaction extends StatefulWidget {
 }
 
 class _EditTransactionState extends State<EditTransaction> {
-  DateTime date = DateTime.now();
-  // ignore: unused_field
-  DateTime? _selectedDateTime;
-  String? _selectedtype;
-  String? _selectedCategory;
-  // ignore: unused_field
-  int _value = 0;
-  TextEditingController _amountTextEditingController = TextEditingController();
-  TextEditingController _explainTextEditingController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-
-  final List<String> _iteminex = ['income', 'expense'];
-
-   final List<String> _item = [
-    'food',
-    "Hospital",
-    "Transportation",
-    "Education",
-    "Clothing",
-    "Other"
-  ];
 
   @override
   void initState() {
+    final provider = Provider.of<ProviderTransaction>(context,listen: false);
     super.initState();
-
     super.initState();
-    _value = int.parse(widget.obj.id);
-    _amountTextEditingController =
+    provider.amountTextEditingController =
         TextEditingController(text: widget.obj.amount);
-    _explainTextEditingController =
+    provider.explainTextEditingController =
         TextEditingController(text: widget.obj.explain);
-    _selectedDateTime = widget.obj.datetime;
-    _selectedtype = widget.obj.type;
-    _selectedCategory = widget.obj.name;
-
+    provider.selectedEditDateTime = widget.obj.datetime;
+    provider.selectedEditType = widget.obj.type;
+    provider.selectedEditCategory = widget.obj.name;
   }
 
   @override
@@ -79,13 +56,14 @@ class _EditTransactionState extends State<EditTransaction> {
 
   Container mainContainer() {
     final Size size = MediaQuery.of(context).size;
+    final value = Provider.of<ProviderTransaction>(context,listen: false);
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: cWhiteColor),
       height: size.height * 0.7,
       width: size.width * 0.9,
       child: Form(
-        key: _formKey,
+        key: value.formKey,
         child: Column(
           children: [
             const SizedBox(
@@ -114,7 +92,7 @@ class _EditTransactionState extends State<EditTransaction> {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                if (_formKey.currentState!.validate()) {
+                if (value.formKey.currentState!.validate()) {
                   
                   submitEditIncomeTransaction();
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -152,6 +130,7 @@ class _EditTransactionState extends State<EditTransaction> {
     );
   }
 
+
   Container dateTime() {
     return Container(
       alignment: Alignment.bottomLeft,
@@ -159,235 +138,257 @@ class _EditTransactionState extends State<EditTransaction> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 2, color: cGreyColor)),
       width: 300,
-      child: TextButton(
-        //child: Text('${widget.obj.datetime}'),
-        onPressed: () async {
-          DateTime? newDate = await showDatePicker(
-              context: context,
-              initialDate: widget.obj.datetime,
-              //initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2100));
-          // ignore: unrelated_type_equality_checks
-          if (newDate == Null) return;
-          setState(() {
-            date = newDate!;
-          });
+      child: Consumer<ProviderTransaction>(
+        builder: (context, value, child) {
+          return TextButton(
+          //child: Text('${widget.obj.datetime}'),
+          onPressed: () async {
+            DateTime? newDate = await showDatePicker(
+                context: context,
+                initialDate: widget.obj.datetime,
+                //initialDate: DateTime.now(),
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2100));
+            // ignore: unrelated_type_equality_checks
+            if (newDate == Null) return;
+            value.setDate(newDate);
+          },
+          child: Text(
+            'Date : ${value.date.year}/${value.date.month}/${value.date.day}',
+            style: const TextStyle(
+                fontSize: 16,
+                color: cBlackColor),
+          ),
+        );
         },
-
-        child: Text(
-          'Date : ${date.year}/${date.month}/${date.day}',
-          style: const TextStyle(
-              fontSize: 16,
-              color: cBlackColor),
-        ),
+        
       ),
     );
   }
 
+
   Padding type() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
-          width: 300,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              width: 2,
-              color: cGreyColor,
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: DropdownButtonFormField<String>(
-              hint: Row(
-                children: [
-                  SizedBox(
-                    width: 40,
-                    child: Image.asset('pictures/${widget.obj.type}.png'),
-                  ),
-                  Text(widget.obj.type,
-                      style: const TextStyle(color: cBlackColor)),
-                ],
+      child: Consumer<ProviderTransaction>(
+        builder: (context, provider, child) {
+          return Container(
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 2,
+                color: cGreyColor,
               ),
-              value: _selectedtype,
-
-              onChanged: ((value) {
-                setState(() {
-                  _selectedtype = value!;
-                });
-              }),
-
-              items: _iteminex
-                  .map((e) => DropdownMenuItem(
-                        value: e,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'pictures/$e.png',
-                              width: 30,
-                              height: 30,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              e,
-                              style: const TextStyle(fontSize: 17),
-                            )
-                          ],
-                        ),
-                      ))
-                  .toList(),
-
-              dropdownColor: cWhiteColor,
-              isExpanded: true,
             ),
-          )),
+            child: SingleChildScrollView(
+              child: DropdownButtonFormField<String>(
+                hint: Row(
+                  children: [
+                    SizedBox(
+                      width: 40,
+                      child: Image.asset('pictures/${widget.obj.type}.png'),
+                    ),
+                    Text(widget.obj.type,
+                        style: const TextStyle(color: cBlackColor)),
+                  ],
+                ),
+                value: provider.selectedEditType,
+      
+                onChanged: ((value) {
+                  provider.setSelectedType(value!);
+                }),
+                items: provider.iteminex
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'pictures/$e.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                e,
+                                style: const TextStyle(fontSize: 17),
+                              )
+                            ],
+                          ),
+                        ))
+                    .toList(),
+      
+                dropdownColor: cWhiteColor,
+                isExpanded: true,
+              ),
+            ));
+        },
+        
+      ),
     );
   }
+
 
   Padding amount() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: SizedBox(
         width: 300,
-        child: TextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Required Name';
-            } else {
-              return null;
-            }
-          },
-          keyboardType: TextInputType.number,
-          controller: _amountTextEditingController,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            labelText: 'Amount',
-            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: cBlackColor),
-            ),
-            enabledBorder: OutlineInputBorder(
+        child: Consumer<ProviderTransaction>(
+          builder: (context, provider, child) {
+            return TextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required Name';
+              } else {
+                return null;
+              }
+            },
+            keyboardType: TextInputType.number,
+            controller: provider.amountTextEditingController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              labelText: 'Amount',
+              labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: cGreyColor)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: cGreenColor)),
-          ),
+                borderSide: const BorderSide(width: 2, color: cBlackColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(width: 2, color: cGreyColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(width: 2, color: cGreenColor)),
+            ),
+          );
+          },
+          
         ),
       ),
     );
   }
+
 
   Padding explain() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: SizedBox(
-        width: 300,
-        child: TextField(
-          controller: _explainTextEditingController,
-          decoration: InputDecoration(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            labelText: 'explain',
-            labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(width: 2, color: cBlackColor),
-            ),
-            enabledBorder: OutlineInputBorder(
+      child: Consumer<ProviderTransaction>(
+        builder: (context, provider, child) {
+          return  SizedBox(
+          width: 300,
+          child: TextField(
+            controller: provider.explainTextEditingController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              labelText: 'explain',
+              labelStyle: const TextStyle(fontSize: 17, color: cGreyColor),
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(width: 2, color: cGreyColor)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: const BorderSide(width: 2, color: cGreenColor)),
+                borderSide: const BorderSide(width: 2, color: cBlackColor),
+              ),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(width: 2, color: cGreyColor)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: const BorderSide(width: 2, color: cGreenColor)),
+            ),
           ),
-        ),
+        );
+        },
+        
       ),
     );
   }
 
-     Padding name() {
+
+  Padding name() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        width: 300,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            width: 2,
-            color: cWhiteColor2,
-          ),
-        ),
-        child: DropdownButtonFormField<String>(
-           hint: Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                  child: Image.asset('images/${widget.obj.name}.png'),
-                ),
-                Text('${widget.obj.name} ',
-                    style: const TextStyle(color: cBlackColor)),
-              ],
+      child: Consumer<ProviderTransaction>(
+        builder: (context, provider, child) {
+          return  Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          width: 300,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: cWhiteColor2,
             ),
-          onChanged: (value) {
-            setState(() {
-              _selectedCategory = value!;
-            });
-          },
-          items: _item
-              .map(
-                (e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 40,
-                          child: Image.asset('images/$e.png'),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          e,
-                          style: const TextStyle(fontSize: 18),
-                        )
-                      ],
+          ),
+          child: DropdownButtonFormField<String>(
+             hint: Row(
+                children: [
+                  SizedBox(
+                    width: 40,
+                    child: Image.asset('images/${widget.obj.name}.png'),
+                  ),
+                  Text('${widget.obj.name} ',
+                      style: const TextStyle(color: cBlackColor)),
+                ],
+              ),
+            onChanged: (value) {
+              provider.setSelectedItem(value!);
+            },
+            items: provider.item
+                .map(
+                  (e) => DropdownMenuItem<String>(
+                    value: e,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 40,
+                            child: Image.asset('images/$e.png'),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            e,
+                            style: const TextStyle(fontSize: 18),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-              .toList(),
-          selectedItemBuilder: (BuildContext context) => _item
-              .map(
-                (e) => Row(
-                  children: [
-                    SizedBox(
-                      width: 42,
-                      child: Image.asset('images/$e.png'),
-                    ),
-                    const SizedBox(width: 5),
-                    Text(e),
-                  ],
-                ),
-              )
-              .toList(),
-          decoration: const InputDecoration(
-            hintText: 'Category',
-            hintStyle: TextStyle(color: cGreyColor),
-            border: InputBorder.none,
+                )
+                .toList(),
+            selectedItemBuilder: (BuildContext context) => provider.item
+                .map(
+                  (e) => Row(
+                    children: [
+                      SizedBox(
+                        width: 42,
+                        child: Image.asset('images/$e.png'),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(e),
+                    ],
+                  ),
+                )
+                .toList(),
+            decoration: const InputDecoration(
+              hintText: 'Category',
+              hintStyle: TextStyle(color: cGreyColor),
+              border: InputBorder.none,
+            ),
+            dropdownColor: cWhiteColor,
+            isExpanded: true,
           ),
-          dropdownColor: cWhiteColor,
-          isExpanded: true,
-        ),
+        );
+        },
+        
       ),
     );
   }
+
 
   Column backgroundContainer(BuildContext context) {
     return Column(
@@ -439,18 +440,20 @@ class _EditTransactionState extends State<EditTransaction> {
       ],
     );
   }
+  
 
   Future<void> submitEditIncomeTransaction() async {
     final provider = Provider.of<TransactionDBProvider>(context,listen: false);
-    final explainText = _explainTextEditingController.text;
-    final amountText = _amountTextEditingController.text;
+    final value = Provider.of<ProviderTransaction>(context,listen: false);
+    final explainText = value.explainTextEditingController.text;
+    final amountText = value.amountTextEditingController.text;
 
     final model = MoneyModel(
-        type: _selectedtype!,
+        type: value.selectedEditType!,
         amount: amountText,
-        datetime: date,
+        datetime: value.date,
         explain: explainText,
-        name: _selectedCategory!,
+        name: value.selectedEditCategory!,
         id: widget.obj.id);
 
      await provider.editTransaction(model);

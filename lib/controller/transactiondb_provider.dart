@@ -11,10 +11,6 @@ class TransactionDBProvider extends ChangeNotifier {
   //   setAllList();
   // }
 
-   List<MoneyModel> allsongs = [];
-List<MoneyModel> searchSongs = [];
-   List<MoneyModel> results = [];
-
   List<MoneyModel> transactionList = [];
   List<MoneyModel>  graphList = [];
 

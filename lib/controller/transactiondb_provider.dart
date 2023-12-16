@@ -54,24 +54,4 @@ class TransactionDBProvider extends ChangeNotifier {
    graphList = transactionList;
     notifyListeners();
   }
-
-   void updateSearchList(String enteredText) {
-    if (enteredText.isEmpty) {
-      results = allsongs;
-    } else {
-      results = allsongs
-          .where(
-            (element) => element.explain
-                .toLowerCase()
-                .trim()
-                .contains(enteredText.toLowerCase().trim()),
-          )
-          .toList();
-    }
-        // log(results.toString());
-    searchSongs = results;
-    notifyListeners();
-
-    
-  }
 }

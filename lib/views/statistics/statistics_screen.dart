@@ -18,13 +18,15 @@ class StatisticsScreen extends StatefulWidget {
 
 class _TransactionInsightsAllState extends State<StatisticsScreen> {
 
-  @override
-  void initState() {
-    super.initState();
-    final transactionProvider =
-        Provider.of<TransactionDBProvider>(context, listen: false);
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    // Execute setAllList after the current frame is built
+    final transactionProvider = Provider.of<TransactionDBProvider>(context, listen: false);
     transactionProvider.setAllList();
-  }
+  });
+}
 
   @override
   Widget build(BuildContext context) {

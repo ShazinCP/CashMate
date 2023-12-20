@@ -34,9 +34,9 @@ class ProviderTransaction extends ChangeNotifier {
 
   DateTime? selectedEditDateTime;
 
-  String? selectedEditType;
+  // String? selectedEditType;
 
-  String? selectedEditCategory;
+  // String? selectedEditCategory;
 
   TextEditingController amountTextEditingController = TextEditingController();
 

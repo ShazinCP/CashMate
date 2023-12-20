@@ -1,57 +1,44 @@
 import 'package:cashmate/model/data_model.dart';
+import 'package:cashmate/services/db_services.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 
 const transactionDBName = 'Transaction_database';
 
 class TransactionDBProvider extends ChangeNotifier {
-
   // TransactionDBProvider(){
   //   setAllList();
   // }
 
   List<MoneyModel> transactionList = [];
-  List<MoneyModel>  graphList = [];
+  List<MoneyModel> graphList = [];
 
   ValueNotifier showCategory = ValueNotifier('All');
 
+  final TransactionService _transactionService = TransactionService();
+
   Future<void> getAllTransactions() async {
-    final transactionDB =
-        await Hive.openBox<MoneyModel>(transactionDBName);
-    transactionList.clear();
-
-    transactionList.addAll(transactionDB.values);
-
+    transactionList = await _transactionService.getAllTransactions();
     notifyListeners();
   }
 
   Future<void> insertTransaction(MoneyModel obj) async {
-    final transactionDB =
-        await Hive.openBox<MoneyModel>(transactionDBName);
-    await transactionDB.put(obj.id, obj);
-    getAllTransactions();
-    notifyListeners();
+    await _transactionService.insertTransaction(obj);
+    await getAllTransactions();
   }
 
   Future<void> deleteTransaction(MoneyModel transactionModel) async {
-    final transactionDB =
-        await Hive.openBox<MoneyModel>(transactionDBName);
-    transactionDB.delete(transactionModel.id);
-    getAllTransactions();
-    notifyListeners();
+    await _transactionService.deleteTransaction(transactionModel.id);
+    await getAllTransactions();
   }
 
   Future<void> editTransaction(MoneyModel value) async {
-    final transactionDB =
-        await Hive.openBox<MoneyModel>(transactionDBName);
-    transactionDB.put(value.id, value);
-    getAllTransactions();
+    await _transactionService.editTransaction(value);
     notifyListeners();
+    await getAllTransactions();
   }
 
-  void setAllList(){
-   graphList = transactionList;
+  void setAllList() {
+    graphList = transactionList;
     notifyListeners();
   }
 }
